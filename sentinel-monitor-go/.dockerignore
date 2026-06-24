@@ -1,0 +1,13 @@
+.git
+.github
+.env
+*.pem
+*.key
+*.crt
+*.pfx
+*.p12
+health.json
+sentinel-health.json
+bin/
+dist/
+coverage.out
