@@ -6,7 +6,8 @@ services:
       context: ../sentinel-monitor-go
     container_name: sentinel-lab-monitor
     environment:
-      - HEALTH_PATH=/tmp/sentinel-health.json
+      - HEALTH_PATH=/tmp/sentinel/health.json
+      - SELF_TEST_INTERVAL=60s
       - RPC_URL=http://anvil:8545
       - DISPATCHER_ADDRESS=dev-dispatcher-placeholder
     read_only: true
@@ -14,16 +15,16 @@ services:
     cap_drop:
       - ALL
     tmpfs:
-      - /tmp:size=16m,mode=1777
+      - /tmp/sentinel:size=16m,uid=10001,gid=10001,mode=1700
     depends_on:
       - anvil
       - ipfs
     networks:
       - sentinel-lab
     healthcheck:
-      test: ["CMD", "/app/sentinel-monitor"]
+      test: ["CMD", "/app/sentinel-monitor", "healthcheck"]
       interval: 30s
-      timeout: 10s
+      timeout: 5s
       start_period: 30s
       retries: 3
 
