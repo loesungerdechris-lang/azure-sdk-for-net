@@ -9,5 +9,6 @@ FROM alpine:3.20
 RUN adduser -D -H -u 10001 sentinel
 WORKDIR /app
 COPY --from=build /out/sentinel-monitor /app/sentinel-monitor
-USER sentinel
+USER 10001:10001
+ENV HEALTH_PATH=/tmp/sentinel-health.json
 ENTRYPOINT ["/app/sentinel-monitor"]
