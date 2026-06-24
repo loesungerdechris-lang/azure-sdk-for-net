@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  sentinel-monitor:
+    image: ghcr.io/loesungerdechris-lang/sentinel-monitor-go@sha256:<FIXED_IMAGE_DIGEST>
+    container_name: sentinel-monitor
+    restart: unless-stopped
+    env_file:
+      - .env
+    networks:
+      - sentinel-net
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+    healthcheck:
+      test: ["CMD", "/app/sentinel-monitor"]
+      interval: 30s
+      timeout: 10s
+      start_period: 60s
+      retries: 3
+
+networks:
+  sentinel-net:
+    driver: bridge
