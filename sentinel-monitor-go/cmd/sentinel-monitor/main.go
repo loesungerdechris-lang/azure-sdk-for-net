@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/loesungerdechris-lang/sentinel-monitor-go/internal/alerting"
@@ -10,11 +11,16 @@ import (
 	"github.com/loesungerdechris-lang/sentinel-monitor-go/internal/selftest"
 )
 
-const healthPath = "health.json"
+const defaultHealthPath = "/tmp/sentinel-health.json"
 
 func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
+
+	healthPath := os.Getenv("HEALTH_PATH")
+	if healthPath == "" {
+		healthPath = defaultHealthPath
+	}
 
 	runner := selftest.NewRunner(
 		selftest.StaticCheck{CheckName: "evidence-chain-consistency"},
