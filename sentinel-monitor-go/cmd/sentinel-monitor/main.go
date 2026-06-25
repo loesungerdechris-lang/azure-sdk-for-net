@@ -16,11 +16,11 @@ import (
 )
 
 const (
-	defaultHealthPath     = "/tmp/sentinel/health.json"
-	defaultCheckInterval  = 60 * time.Second
-	defaultHealthMaxAge   = 2 * time.Minute
-	selfTestTimeout       = 10 * time.Second
-	serviceName           = "sentinel-monitor-go"
+	defaultHealthPath    = "/tmp/sentinel/health.json"
+	defaultCheckInterval = 60 * time.Second
+	defaultHealthMaxAge  = 2 * time.Minute
+	selfTestTimeout      = 10 * time.Second
+	serviceName          = "sentinel-monitor-go"
 )
 
 func main() {
