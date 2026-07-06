@@ -1,6 +1,7 @@
 name: SENTINEL Lab CI
 
 on:
+  workflow_dispatch:
   push:
     branches: ["main", "release/**"]
   pull_request:
@@ -14,6 +15,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Validate lab compose config
+      - name: Validate compose config
         working-directory: sentinel-lab
         run: docker compose -f docker-compose.lab.yml config
