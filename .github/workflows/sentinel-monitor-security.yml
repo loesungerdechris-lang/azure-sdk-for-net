@@ -1,6 +1,7 @@
 name: SENTINEL Monitor Security
 
 on:
+  workflow_dispatch:
   push:
     branches: ["main", "release/**"]
   pull_request:
