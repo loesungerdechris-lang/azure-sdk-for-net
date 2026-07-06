@@ -1,0 +1,3 @@
+sentinel ping
+ref main
+2026-07-06T14:38:00Z
