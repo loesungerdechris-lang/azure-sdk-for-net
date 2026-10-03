@@ -11,3 +11,5 @@ sentinel-health.json
 bin/
 dist/
 coverage.out
+**/__pycache__
+**/*.py[cod]
