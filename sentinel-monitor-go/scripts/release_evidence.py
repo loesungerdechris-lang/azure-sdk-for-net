@@ -101,6 +101,8 @@ def prepare(archive, digest, commit, layout=None):
         raise ValueError("Build provenance attestation is missing")
     if layout is not None:
         for name, data in files.items():
+            if name == "index.json":
+                data = json_bytes({"schemaVersion": 2, "manifests": [image]})
             path = Path(layout) / name
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(data)

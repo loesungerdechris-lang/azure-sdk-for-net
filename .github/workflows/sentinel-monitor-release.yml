@@ -97,7 +97,7 @@ jobs:
         with:
           version: v0.75.0
           scan-type: image
-          input: ${{ runner.temp }}/oci@${{ steps.prepare.outputs.platform_manifest_digest }}
+          input: ${{ runner.temp }}/oci
           scanners: vuln
           format: json
           output: ${{ runner.temp }}/trivy-report.json
@@ -114,8 +114,15 @@ jobs:
             --archive "$RUNNER_TEMP/image.tar" \
             --evidence "$RUNNER_TEMP/release-evidence.json" \
             --report "$RUNNER_TEMP/trivy-report.json"
+      - name: Check whether a scan report was produced
+        id: scan_report
+        if: ${{ always() }}
+        run: |
+          if [ -f "$RUNNER_TEMP/trivy-report.json" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          fi
       - name: Retain vulnerability report, including failed scans
-        if: ${{ always() && steps.scan.outcome != 'skipped' }}
+        if: ${{ always() && steps.scan_report.outputs.available == 'true' }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: sentinel-monitor-scan-${{ github.run_id }}-${{ github.run_attempt }}

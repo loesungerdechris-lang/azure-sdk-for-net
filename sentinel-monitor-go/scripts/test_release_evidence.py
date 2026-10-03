@@ -82,6 +82,17 @@ class ReleaseEvidenceTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             prepare(self.archive, "sha256:" + "0" * 64, "a" * 40)
 
+    def test_scan_layout_selects_the_verified_platform_without_changing_archive(self):
+        before = self.archive.read_bytes()
+        layout = Path(self.temp.name) / "scan"
+        record = prepare(self.archive, self.digest, "a" * 40, layout)
+        index = json.loads((layout / "index.json").read_text())
+        self.assertEqual(len(index["manifests"]), 1)
+        self.assertEqual(
+            index["manifests"][0]["digest"], record["platform_manifest_digest"]
+        )
+        self.assertEqual(self.archive.read_bytes(), before)
+
     def test_missing_sbom_is_rejected(self):
         digest, _ = fixture(self.archive, sbom=False)
         with self.assertRaises(ValueError):
